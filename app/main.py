@@ -1,8 +1,11 @@
+from app.api.health import router as health_router
 from fastapi import FastAPI, HTTPException
-from models import ExecutionCreate
-import repository as repo
+from app.models import ExecutionCreate
+import app.repository as repo
 
 app = FastAPI()
+
+app.include_router(health_router)
 
 @app.get("/executions")
 def get_executions():
