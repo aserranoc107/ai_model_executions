@@ -1,0 +1,86 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Compiled extensions
+*.so
+
+# =========================
+# Virtual environments
+# =========================
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+*.env
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Testing / coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# Build files
+# =========================
+build/
+dist/
+*.egg-info/
+
+# =========================
+# IDEs
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS junk
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# FastAPI / Uvicorn / Gunicorn
+# =========================
+*.pid
+*.sock
+
+# =========================
+# Elastic Beanstalk
+# =========================
+.elasticbeanstalk/*
+!.elasticbeanstalk/config.yml
+
+# EB temporary deploy files
+*.zip
+
+# =========================
+# AWS / Secrets
+# =========================
+*.pem
+secrets.json
+.aws/
+
+# =========================
+# Databases (local dev only)
+# =========================
+*.db
+*.sqlite3
