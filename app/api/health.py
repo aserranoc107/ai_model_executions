@@ -17,6 +17,6 @@ def readiness():
     result = health_service.run_checks()
 
     if result.status != "ready":
-        raise JSONResponse(status_code=503, content=result.dict())
+        return JSONResponse(status_code=503, content=result.dict())
 
     return result
