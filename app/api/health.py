@@ -17,6 +17,6 @@ def readiness():
     result = health_service.run_checks()
 
     if result.status != "ready":
-        return JSONResponse(status_code=503, content=result.dict())
+        raise HTTPException(status_code=503, content=result.dict())
 
     return result

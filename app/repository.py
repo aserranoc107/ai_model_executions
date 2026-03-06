@@ -1,8 +1,5 @@
 from sqlalchemy import text
-from app.db import get_engine
-
-
-engine = get_engine()
+from app.db import engine
 
 def get_all_executions():
     with engine.connect() as conn:

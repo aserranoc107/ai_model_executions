@@ -1,36 +1,37 @@
 import os
-import json
 import boto3
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
+from sqlalchemy.pool import NullPool
 
 load_dotenv()
 
-def get_secret():
-    region = os.getenv("REGION")
-    secret_name = os.getenv("SECRETS_NAME")
+region = os.getenv("REGION")
+db_host = os.getenv("DB_HOST")
+db_port = int(os.getenv("DB_PORT"))
+db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_SERVER_USER")
 
-    client = boto3.client("secretsmanager", region_name=region)
-    response = client.get_secret_value(SecretId=secret_name)
-    secret = json.loads(response["SecretString"])
+print(boto3.client("sts").get_caller_identity())
 
-    return secret
+rds = boto3.client("rds", region_name=region)
+engine = create_engine(
+    f"postgresql+psycopg2://{db_user}@{db_host}:{db_port}/{db_name}",
+    pool_pre_ping=True,
+    poolclass= NullPool
+)
 
-
-def get_engine():
-    db_host = os.getenv("DB_HOST")
-    db_port = os.getenv("DB_PORT")
-    db_name = os.getenv("DB_NAME")
-
-    secret = get_secret()
-
-    connection_string = (
-        f"postgresql+psycopg2://{secret['user_name']}:"
-        f"{secret['password']}@{db_host}:{db_port}/{db_name}"
+@event.listens_for(engine, "do_connect")
+def provide_token(dialect, conn_rec, cargs, cparams):
+    token = rds.generate_db_auth_token(
+        DBHostname = db_host,
+        Port = db_port,
+        DBUsername = db_user,
+        Region = region
     )
 
-    engine = create_engine(connection_string, echo=False)
-    return engine
+    cparams["password"] = token
+    cparams["sslmode"] = "require"
 
 
 
