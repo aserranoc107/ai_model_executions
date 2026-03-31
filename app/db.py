@@ -12,7 +12,7 @@ db_port = int(os.getenv("DB_PORT"))
 db_name = os.getenv("DB_NAME")
 db_user = os.getenv("DB_SERVER_USER")
 
-print(boto3.client("sts").get_caller_identity())
+#print(boto3.client("sts").get_caller_identity())
 
 rds = boto3.client("rds", region_name=region)
 engine = create_engine(
